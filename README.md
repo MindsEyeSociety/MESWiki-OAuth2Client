@@ -54,6 +54,20 @@ $wgOAuth2Client['configuration']['service_login_link_text'] = 'Login with StarMa
 
 ```
 
+Advanced Configuration
+
+```
+$wgOAuth2Client['configuration']['username_callback'] = function($user){
+	//Recieve as argument the response variable, return the username to be used.
+	//In this example, the data is in the main JSON response object, not in the user element
+	return $user['firstName'].' '.substr($user['lastName'],0,1);
+};
+$wgOAuth2Client['configuration']['email_callback'] = function($user){
+	return $user['emailAddress'];
+};
+```
+
+
 ### Popup Window
 To use a popup window to login to the external OAuth2 server, copy the JS from modal.js to the [MediaWiki:Common.js](https://www.mediawiki.org/wiki/Manual:Interface/JavaScript) page on your wiki.
 

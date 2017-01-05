@@ -141,9 +141,15 @@ class SpecialOAuth2Client extends SpecialPage {
 
 	protected function _userHandling( $response ) {
 		global $wgOAuth2Client, $wgAuth, $wgRequest;
+		if(!empty($wgOAuth2Client['configuration']['username_callback']) && is_callable($wgOAuth2Client['configuration']['username_callback'])){
+			$username = $wgOAuth2Client['configuration']['username_callback']($response);
+		}
+		else $username = $response['user'][$wgOAuth2Client['configuration']['username']];
 
-		$username = $response['user'][$wgOAuth2Client['configuration']['username']];
-		$email = $response['user'][$wgOAuth2Client['configuration']['email']];
+		if(!empty($wgOAuth2Client['configuration']['email_callback']) && is_callable($wgOAuth2Client['configuration']['email_callback'])){
+			$email = $wgOAuth2Client['configuration']['email_callback']($response);
+		}
+		else $email = $response['user'][$wgOAuth2Client['configuration']['email']];
 
 		$user = User::newFromName($username, 'creatable');
 		if (!$user) {
