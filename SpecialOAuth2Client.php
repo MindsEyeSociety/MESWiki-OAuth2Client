@@ -85,7 +85,6 @@ class SpecialOAuth2Client extends SpecialPage {
 		// Get the state generated for you and store it to the session.
 		$wgRequest->getSession()->set('oauth2state', $this->_provider->getState());
 		$wgRequest->getSession()->save();
-
 		// Redirect the user to the authorization URL.
 		$wgOut->redirect( $authorizationUrl );
 	}
@@ -117,7 +116,7 @@ class SpecialOAuth2Client extends SpecialPage {
 			$wgRequest->getSession()->save();
 		}
 
-		if( !$title instanceof Title || 0 > $title->mArticleID ) {
+		if( !$title instanceof Title || 0 > $title->getArticleID()) {
 			$title = Title::newMainPage();
 		}
 		$wgOut->redirect( $title->getFullURL() );
